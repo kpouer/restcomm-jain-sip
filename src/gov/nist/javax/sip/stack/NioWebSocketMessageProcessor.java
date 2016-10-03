@@ -39,7 +39,7 @@ public class NioWebSocketMessageProcessor extends NioTcpMessageProcessor {
     
     public NioWebSocketMessageProcessor(InetAddress ipAddress,
 			SIPTransactionStack sipStack, int port) {
-		super(ipAddress, sipStack, port);		
+		super(ipAddress, sipStack, port);
 		transport = "WS"; // by default its WS, can be overriden if there is TLS acclereator
 	}
 	
@@ -53,9 +53,9 @@ public class NioWebSocketMessageProcessor extends NioTcpMessageProcessor {
 			nioHandler.putMessageChannel(client, retval);
 		}
 		return retval;
-	}
-        
-    @Override        
+    }
+
+    @Override
     ConnectionOrientedMessageChannel constructMessageChannel(InetAddress targetHost, int port) throws IOException {
         return new NioWebSocketMessageChannel(targetHost,
                             port, sipStack, this);

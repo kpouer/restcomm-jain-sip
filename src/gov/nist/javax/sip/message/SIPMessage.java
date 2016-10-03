@@ -305,7 +305,8 @@ public abstract class SIPMessage extends MessageObject implements javax.sip.mess
     public final String getDialogId(boolean isServer, String toTag) {
         From from = (From) this.getFrom();
         CallID cid = (CallID) this.getCallId();
-        StringBuffer retval = new StringBuffer(cid.getCallId());
+        StringBuilder retval = new StringBuilder(200);
+        retval.append(cid.getCallId());
         if (!isServer) {
             // retval.append(COLON).append(from.getUserAtHostPort());
             if (from.getTag() != null) {

@@ -434,7 +434,6 @@ public abstract class SIPTransactionStack implements
     public ScheduledExecutorService getSelfRoutingThreadpoolExecutor() {
         if(selfRoutingThreadpoolExecutor == null) {
             if(this.threadPoolSize<=0) {
-                
                 selfRoutingThreadpoolExecutor = new ThreadAffinityExecutor(16);
             } else {
                 selfRoutingThreadpoolExecutor = new ThreadAffinityExecutor(this.threadPoolSize);
@@ -1130,7 +1129,7 @@ public abstract class SIPTransactionStack implements
                     }
                     if (retval == null) {
                         //take first matching tx, just in case
-                        retval = ct;                    	
+                        retval = ct;
                     }
                     //https://github.com/RestComm/jain-sip/issues/60
                     //Now check complementary conditions, to override selected ct, and break
@@ -3072,7 +3071,7 @@ public abstract class SIPTransactionStack implements
     public void setDeliverDialogTerminatedEventForNullDialog() {
         this.isDialogTerminatedEventDeliveredForNullDialog = true;
     }
-    
+
     public void addForkedClientTransaction(
             SIPClientTransaction clientTransaction) {
         String forkId = ((SIPRequest)clientTransaction.getRequest()).getForkId();

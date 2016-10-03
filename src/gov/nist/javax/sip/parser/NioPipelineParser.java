@@ -266,7 +266,7 @@ public class NioPipelineParser {
 			readingMessageBodyContents = false;
 			final String msgLines = message.toString();
 			message = new StringBuilder();
-			final byte[] msgBodyBytes = messageBody;			
+			final byte[] msgBodyBytes = messageBody;
 			
 			if(sipStack.getSelfRoutingThreadpoolExecutor() != null) {
 				final String callId = this.callId;

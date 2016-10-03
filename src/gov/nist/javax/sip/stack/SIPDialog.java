@@ -211,7 +211,7 @@ public class SIPDialog implements javax.sip.Dialog, DialogExt {
     private int dialogState;
 
     private transient ACKWrapper lastAckSent;
-    
+
     // jeand : replaced the lastAckReceived message with only the data needed to
     // save on mem
     protected Long lastAckReceivedCSeqNumber;
@@ -3335,7 +3335,7 @@ public class SIPDialog implements javax.sip.Dialog, DialogExt {
         }
 
     }
-    
+
     /**
      * Set the last response for this dialog. This method is called for updating
      * the dialog state when a response is either sent or received from within a

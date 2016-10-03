@@ -105,12 +105,7 @@ public class ExtensionHeaderImpl
      * Return the canonical encoding of this header.
      */
     public String encode() {
-        return new StringBuffer(this.headerName)
-            .append(COLON)
-            .append(SP)
-            .append(this.value)
-            .append(NEWLINE)
-            .toString();
+        return this.headerName + COLON + SP + this.value + NEWLINE;
     }
     
     /**
