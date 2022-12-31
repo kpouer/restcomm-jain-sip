@@ -54,7 +54,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class EventScanner implements Runnable {
 
-    private static StackLogger logger = CommonLogger.getLogger(EventScanner.class);
+	private static StackLogger logger = CommonLogger.getLogger(EventScanner.class);
 
     private boolean isStopped;
 
@@ -85,8 +85,8 @@ public class EventScanner implements Runnable {
     }
 
     public void addEvent(EventWrapper eventWrapper) {
-        if (logger.isLoggingEnabled(LogLevels.TRACE_DEBUG))
-            logger.logDebug("addEvent " + eventWrapper);
+    	if (logger.isLoggingEnabled(LogLevels.TRACE_DEBUG))
+    		logger.logDebug("addEvent " + eventWrapper);
             // Add the event into the pending events list
             boolean added = pendingEvents.offer(eventWrapper);
 
@@ -414,8 +414,8 @@ public class EventScanner implements Runnable {
                             .processTransactionTerminated((TransactionTerminatedEvent) sipEvent);
             } catch (AbstractMethodError ame) {
                 // JvB: for backwards compatibility, accept this
-                if (logger.isLoggingEnabled())
-                    logger
+            	if (logger.isLoggingEnabled())
+            		logger
                         .logWarning(
                                 "Unable to call sipListener.processTransactionTerminated");
             } catch (Exception ex) {
@@ -428,8 +428,8 @@ public class EventScanner implements Runnable {
                             .processDialogTerminated((DialogTerminatedEvent) sipEvent);
             } catch (AbstractMethodError ame) {
                 // JvB: for backwards compatibility, accept this
-                if (logger.isLoggingEnabled())
-                    logger.logWarning(
+            	if (logger.isLoggingEnabled())
+            		logger.logWarning(
                         "Unable to call sipListener.processDialogTerminated");
             } catch (Exception ex) {
                 logger.logException(ex);
@@ -458,42 +458,42 @@ public class EventScanner implements Runnable {
             while (true) {
                 EventWrapper eventWrapper = null;
 
-                // There's nothing in the list, check to make sure we
-                // haven't
-                // been stopped. If we have, then let the thread die.
-                if (this.isStopped) {
-                    if (logger.isLoggingEnabled(LogLevels.TRACE_DEBUG))
-                        logger.logDebug(
-                                "Stopped event scanner!!");
-                    return;
-                }
+                        // There's nothing in the list, check to make sure we
+                        // haven't
+                        // been stopped. If we have, then let the thread die.
+                        if (this.isStopped) {
+                            if (logger.isLoggingEnabled(LogLevels.TRACE_DEBUG))
+                                logger.logDebug(
+                                        "Stopped event scanner!!");
+                            return;
+                        }
 
-                // We haven't been stopped, and the event list is indeed
-                // rather empty. Wait for some events to come along.
-                // Send a heartbeat to the thread auditor
-                if(threadHandle != null) {
-                    threadHandle.ping();
-                }
+                        // We haven't been stopped, and the event list is indeed
+                        // rather empty. Wait for some events to come along.
+                        // Send a heartbeat to the thread auditor
+                        if(threadHandle != null) {
+                            threadHandle.ping();
+                        }
 
 
-                // There are events in the 'pending events list' that need
-                // processing. Hold onto the old 'pending Events' list, but
-                // make a new one for the other methods to operate on. This
-                // tap-dancing is to avoid deadlocks and also to ensure that
-                // the list is not modified while we are iterating over it.
-                try {
-                    eventWrapper = (EventWrapper) pendingEvents.take();
-                    deliverEvent(eventWrapper);
-                } catch (InterruptedException ex) {
-                    // Let the thread die a normal death
-                    if (logger.isLoggingEnabled(LogLevels.TRACE_ERROR))
-                        logger.logError("Interrupted!", ex);
-                    return;
-                } catch (Exception e) {
-                    if (logger.isLoggingEnabled()) {
-                        logger.logError(
-                                "Unexpected exception caught while delivering event -- carrying on bravely", e);
-                    }
+                    // There are events in the 'pending events list' that need
+                    // processing. Hold onto the old 'pending Events' list, but
+                    // make a new one for the other methods to operate on. This
+                    // tap-dancing is to avoid deadlocks and also to ensure that
+                    // the list is not modified while we are iterating over it.
+                    try {
+                        eventWrapper = (EventWrapper) pendingEvents.take();
+                        deliverEvent(eventWrapper);
+                    } catch (InterruptedException ex) {
+                        // Let the thread die a normal death
+                        if (logger.isLoggingEnabled(LogLevels.TRACE_ERROR))
+                            logger.logError("Interrupted!", ex);
+                        return;
+                    } catch (Exception e) {
+                        if (logger.isLoggingEnabled()) {
+                            logger.logError(
+                                    "Unexpected exception caught while delivering event -- carrying on bravely", e);
+                        }
                 }
             } // end While
         } finally {

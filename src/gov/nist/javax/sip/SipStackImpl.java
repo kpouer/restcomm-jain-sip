@@ -565,8 +565,7 @@ import javax.sip.message.Request;
  * the SIPMessageValve.processRequest/Response() methods will be called for every message before any long-lived SIP Stack resources are allocated
  * (no transactions, no dialogs). From within the processRequest callback implementation you can drop messages, send a response statelessly or
  * otherwise transform/pre-process the message before it reaches the next steps of the pipeline. Similarly from processResponse() you can manipulate
- * a response or drop it silently, but dropping responses is not recommended, because the transaction already exists when the request for the response
- * was sent.
+ * a response or drop it silently, but dropping responses is not recommended, because the transaction already exists when the request for the response was sent.
  * </li>
  *
  * <li><b>gov.nist.javax.sip.SIP_EVENT_INTERCEPTOR</b> Default to null. The class name of your custom interceptor object.
@@ -1519,17 +1518,6 @@ public class SipStackImpl extends SIPTransactionStack implements
 						"Bad configuration value for gov.nist.javax.sip.NIO_MAX_SOCKET_IDLE_TIME=" + maxIdleTimeString, e);
 		}
 
-		String nioMode = configurationProperties.getProperty("gov.nist.javax.sip.NIO_BLOCKING_MODE", "BLOCKING");
-		try {
-			super.nioMode = NIOMode.valueOf(nioMode);
-		} catch (Exception e) {
-			logger
-				.logError(
-						"Bad configuration value for gov.nist.javax.sip.NIO_BLOCKING_MODE=" + nioMode, e);
-		}
-
-
-
 		String defaultTimerName = configurationProperties.getProperty("gov.nist.javax.sip.TIMER_CLASS_NAME",DefaultSipTimer.class.getName());
 		try {
 			setTimer((SipTimer)Class.forName(defaultTimerName).newInstance());
@@ -1562,22 +1550,22 @@ public class SipStackImpl extends SIPTransactionStack implements
 		if(valveClassName != null && !valveClassName.equals("")) {
 			String[] valves = valveClassName.split(",");
 			for (String valve : valves) {
-				try {
-					SIPMessageValve sipMessageValve = (SIPMessageValve) Class.forName(valve).newInstance();
-					final SipStack thisStack = this;
+			try {
+				SIPMessageValve sipMessageValve = (SIPMessageValve) Class.forName(valve).newInstance();
+				final SipStack thisStack = this;
 
-					try {
-						Thread.sleep(100);
-						sipMessageValve.init(thisStack);
-					} catch (Exception e) {
-						logger
-						.logError("Error intializing SIPMessageValve", e);
-					}
-					this.sipMessageValves.add(sipMessageValve);
+				try {
+					Thread.sleep(100);
+					sipMessageValve.init(thisStack);
 				} catch (Exception e) {
 					logger
-					.logError(
-							"Bad configuration value for gov.nist.javax.sip.SIP_MESSAGE_VALVE", e);
+					.logError("Error intializing SIPMessageValve", e);
+				}
+					this.sipMessageValves.add(sipMessageValve);
+			} catch (Exception e) {
+				logger
+				.logError(
+						"Bad configuration value for gov.nist.javax.sip.SIP_MESSAGE_VALVE", e);
 				}
 			}
 		}
