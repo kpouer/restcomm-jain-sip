@@ -311,16 +311,21 @@ public class UDPMessageProcessor extends MessageProcessor implements Runnable {
      * messages.
      */
     public void stop() {
-            this.isRunning = false;
-            sock.close();        
-          // closing the channels
-          for (Object messageChannel : messageChannels) {
-			((MessageChannel)messageChannel).close();
-          }
+    	this.isRunning = false;
+    	if(sock == null) {
+    		logger.logDebug("Socket was null, perhaps not started properly");
+    	} else {
+    		sock.close();
+    	}
+
+    	// closing the channels
+    	for (Object messageChannel : messageChannels) {
+    		((MessageChannel)messageChannel).close();
+    	}
           // Contribution for https://github.com/Mobicents/jain-sip/issues/39
-          if(sipStack.getStackCongestionControlTimeout() > 0 && congestionAuditor != null) {
-          	this.congestionAuditor.stop();
-          }
+    	if(sipStack.getStackCongestionControlTimeout() > 0 && congestionAuditor != null) {
+    		this.congestionAuditor.stop();
+    	}
     }
 
     /**

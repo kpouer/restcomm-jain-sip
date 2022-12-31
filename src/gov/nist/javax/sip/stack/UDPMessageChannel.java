@@ -391,6 +391,7 @@ public class UDPMessageChannel extends MessageChannel implements
             if (logger.isLoggingEnabled(LogWriter.TRACE_DEBUG)) {
                 this.logger.logDebug(
                         "Rejecting message !  " + new String(msgBytes) + " " + ex.getMessage());
+                this.logger.logException(ex);
             }
 
             // JvB: send a 400 response for requests (except ACK)
@@ -488,7 +489,7 @@ public class UDPMessageChannel extends MessageChannel implements
                 this.peerAddress = packet.getAddress();
                 // Check to see if the received parameter matches
                 // the peer address and tag it appropriately.
-                
+
                 boolean hasRPort = topMostVia.hasParameter(Via.RPORT);
            if(sipStack.isPatchRport())
                 if(!hasRPort && topMostVia.getPort() != peerPacketSourcePort) {
@@ -675,8 +676,8 @@ public class UDPMessageChannel extends MessageChannel implements
     public void handleException(ParseException ex, SIPMessage sipMessage,
             Class hdrClass, String header, String message)
             throws ParseException {
-        if (logger.isLoggingEnabled(LogWriter.TRACE_DEBUG))
-            logger.logDebug("Parsing Issue " + ex.getMessage());
+        if (logger.isLoggingEnabled())
+            this.logger.logException(ex);
         // Log the bad message for later reference.
         if ((hdrClass != null)
                 && (hdrClass.equals(From.class) || hdrClass.equals(To.class)
@@ -686,8 +687,9 @@ public class UDPMessageChannel extends MessageChannel implements
                         || hdrClass.equals(ContentLength.class)
                         || hdrClass.equals(RequestLine.class) || hdrClass
                         .equals(StatusLine.class))) {
-            if (logger.isLoggingEnabled(LogWriter.TRACE_DEBUG)) {
-                logger.logDebug("BAD MESSAGE! " + message);
+            if (logger.isLoggingEnabled()) {
+                logger.logError("BAD MESSAGE!");
+                logger.logError(message);
             }
             throw ex;
         } else {
