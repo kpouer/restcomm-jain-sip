@@ -226,11 +226,8 @@ public class NioTcpMessageProcessor extends ConnectionOrientedMessageProcessor {
             Queue<PendingData> queue = pendingData.get(socketChannel);
             if (queue == null || queue.isEmpty())
             {
-                if(logger.isLoggingEnabled(LogWriter.TRACE_DEBUG))
-                {
-                        logger.logDebug("The queue was empty on write.");
-                }
                 if(logger.isLoggingEnabled(LogWriter.TRACE_DEBUG)) {
+                    logger.logDebug("The queue was empty on write.");
                     logger.logDebug("We wrote away all data. Setting READ interest. Queue is emtpy now size =" + queue.size());
                 }
                 selectionKey.interestOps(SelectionKey.OP_READ);                
@@ -397,8 +394,8 @@ public class NioTcpMessageProcessor extends ConnectionOrientedMessageProcessor {
                         }
 
         		try {
-        			if(logger.isLoggingEnabled(LogWriter.TRACE_TRACE)) {
-        				logger.logTrace("Before select");
+        			if(logger.isLoggingEnabled(LogWriter.TRACE_DEBUG)) {
+        				logger.logDebug("Before select");
         			}
                     if(!selector.isOpen()) {
                         if(logger.isLoggingEnabled(LogWriter.TRACE_INFO)) {
@@ -407,8 +404,8 @@ public class NioTcpMessageProcessor extends ConnectionOrientedMessageProcessor {
                         return;
                     } else {
                         selResult = selector.select();
-                        if (logger.isLoggingEnabled(LogWriter.TRACE_TRACE)) {
-                            logger.logTrace("After select:" + selResult + ".CRs:"+ changeRequests.size());
+                        if (logger.isLoggingEnabled(LogWriter.TRACE_DEBUG)) {
+                            logger.logDebug("After select:" + selResult + ".CRs:"+ changeRequests.size());
                         }
                     }
         		} catch (IOException e) {

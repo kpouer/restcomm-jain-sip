@@ -126,6 +126,7 @@ public class NioTlsWebSocketMessageProcessor extends NioWebSocketMessageProcesso
         }
 
     }
+
 	public void init() throws Exception, CertificateException, FileNotFoundException, IOException {
 		if(sipStack.securityManagerProvider.getKeyManagers(false) == null ||
 				sipStack.securityManagerProvider.getTrustManagers(false) == null ||

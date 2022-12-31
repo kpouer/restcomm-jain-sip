@@ -78,18 +78,19 @@ public class NioTcpMessageChannel extends ConnectionOrientedMessageChannel {
 			if(streamError) 
 				throw new IOException("End-of-stream read (-1). " +
 					"This is usually an indication we are stuck and it is better to disconnect.");
+
 			// This prevents us from getting stuck in a selector thread spinloop when socket is constantly ready for reading but there are no bytes.
 			if(nbytes == 0) 
 				throw new IOException("The socket is giving us empty TCP packets. " +
 					"This is usually an indication we are stuck and it is better to disconnect.");                        
                         
 			byteBuffer.flip();
-			byte[] msg = new byte[byteBuffer.remaining()];
-			byteBuffer.get(msg);
+			byte[] bytes = new byte[byteBuffer.remaining()];
+			byteBuffer.get(bytes);
 			byteBuffer.clear();
 
 			// Otherwise just add the bytes to queue
-			addBytes(msg);
+			addBytes(bytes);
 			lastActivityTimeStamp = System.currentTimeMillis();
 
 		} catch (Exception ex) { // https://java.net/jira/browse/JSIP-464 make sure to close connections on all exceptions to avoid the stack to hang
@@ -105,7 +106,6 @@ public class NioTcpMessageChannel extends ConnectionOrientedMessageChannel {
 			try {
 				if (logger.isLoggingEnabled(LogWriter.TRACE_DEBUG)) {
 					logger.logDebug("IOException  closing sock " + ex + "myAddress:myport " + myAddress + ":" + myPort + ", remoteAddress:remotePort " + peerAddress + ":" + peerPort);
-					logger.logStackTrace();
 				}
 				
 				close(true, false);

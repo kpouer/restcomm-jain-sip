@@ -69,7 +69,7 @@ public class NioWebSocketMessageChannel extends NioTcpMessageChannel{
 	
 	protected NioWebSocketMessageChannel(SIPTransactionStack stack,NioTcpMessageProcessor nioTcpMessageProcessor,
 			SocketChannel socketChannel) throws IOException {
-		super(nioTcpMessageProcessor,socketChannel);
+		super(nioTcpMessageProcessor, socketChannel);
 		
 		this.stack=stack;
 		messageProcessor = nioTcpMessageProcessor;
