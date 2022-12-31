@@ -1153,6 +1153,12 @@ public class SipStackImpl extends SIPTransactionStack implements
 			}
 		}
 
+        String isTcpNoDelayEnabled = configurationProperties
+                .getProperty("gov.nist.javax.sip.TCP_NODELAY");
+        if (isTcpNoDelayEnabled != null) {
+            this.isTcpNoDelayEnabled = Boolean.parseBoolean(isTcpNoDelayEnabled);
+        }
+
 		String serverTransactionTableSize = configurationProperties
 				.getProperty("gov.nist.javax.sip.MAX_SERVER_TRANSACTIONS");
 		if (serverTransactionTableSize != null) {
