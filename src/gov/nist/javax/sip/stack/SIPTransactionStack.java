@@ -346,13 +346,15 @@ public abstract class SIPTransactionStack implements
     // Send UDP buffer size
     protected int sendUdpBufferSize;
 
-    private int stackCongestionControlTimeout = 0;
+    protected int stackCongestionControlTimeout = 0;
 
     protected boolean isBackToBackUserAgent = false;
 
     protected boolean checkBranchId;
 
     protected boolean isAutomaticDialogErrorHandlingEnabled = true;
+
+    protected boolean isServerLoopDetectionEnabled = true;
 
     protected boolean isDialogTerminatedEventDeliveredForNullDialog = false;
 

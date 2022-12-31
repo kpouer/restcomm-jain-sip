@@ -606,8 +606,8 @@ import javax.sip.message.Request;
  * A Disabled value will not require a certificate chain for the Server Connection. A DisabledAll will not require a certificate chain for both Server and Client Connections.
  * </li>
  *
- *<li><b>gov.nist.javax.sip.RELIABLE_CONNECTION_KEEP_ALIVE_TIMEOUT</b> Value in seconds which is used as default keepalive timeout
- * (See also http://tools.ietf.org/html/rfc5626#section-4.4.1). Defaults to "infiinity" seconds (i.e. timeout event not delivered).</li>
+ * <li><b>gov.nist.javax.sip.RELIABLE_CONNECTION_KEEP_ALIVE_TIMEOUT</b> Value in seconds which is used as default keepalive timeout
+ * (See also http://tools.ietf.org/html/rfc5626#section-4.4.1). Defaults to "infinity" seconds (i.e. timeout event not delivered).</li>
  *
  * <li><b>gov.nist.javax.sip.SSL_HANDSHAKE_TIMEOUT</b> Value in seconds which is used as default timeout for performing the SSL Handshake
  * This prevents bad clients of connecting without sending any data to block the server</li>
@@ -985,6 +985,10 @@ public class SipStackImpl extends SIPTransactionStack implements
 		if ( super.isAutomaticDialogSupportEnabled ) {
 			super.isAutomaticDialogErrorHandlingEnabled = true;
 		}
+
+		super.isServerLoopDetectionEnabled = configurationProperties
+      .getProperty("gov.nist.javax.sip.SERVER_LOOP_DETECTION","on")
+      .equalsIgnoreCase("on");
 
 		if (configurationProperties
 				.getProperty("gov.nist.javax.sip.MAX_LISTENER_RESPONSE_TIME") != null) {
@@ -2048,6 +2052,10 @@ public class SipStackImpl extends SIPTransactionStack implements
 	public boolean isAutomaticDialogErrorHandlingEnabled() {
 		return super.isAutomaticDialogErrorHandlingEnabled;
 	}
+
+	public boolean isServerLoopDetectionEnabled() {
+    return super.isServerLoopDetectionEnabled;
+  }
 
 
 	public void setTlsSecurityPolicy(TlsSecurityPolicy tlsSecurityPolicy) {

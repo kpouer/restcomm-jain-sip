@@ -116,6 +116,8 @@ public class SipProviderImpl implements javax.sip.SipProvider, gov.nist.javax.si
     
     private boolean dialogErrorsAutomaticallyHandled = true;
     
+    private boolean loopDetectionEnabled = true;
+
     private SipProviderImpl() {
 
     }
@@ -195,6 +197,7 @@ public class SipProviderImpl implements javax.sip.SipProvider, gov.nist.javax.si
         this.automaticDialogSupportEnabled = this.sipStack
                 .isAutomaticDialogSupportEnabled();
         this.dialogErrorsAutomaticallyHandled = this.sipStack.isAutomaticDialogErrorHandlingEnabled();
+        this.loopDetectionEnabled = this.sipStack.isServerLoopDetectionEnabled();
     }
 
     /*
@@ -1151,6 +1154,18 @@ public class SipProviderImpl implements javax.sip.SipProvider, gov.nist.javax.si
         return this.dialogErrorsAutomaticallyHandled;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see gov.nist.javax.sip.SipProviderExt#setLoopDetectionEnabled(boolean flag)
+     */
+    public void setLoopDetectionEnabled(boolean flag) {
+        this.loopDetectionEnabled = flag;
+    }
+
+
+    public boolean isLoopDetectionEnabled() {
+      return this.loopDetectionEnabled;
+    }
 
     /**
      * @return the sipListener
