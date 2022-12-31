@@ -80,12 +80,7 @@ public class CommonLogger implements StackLogger{
 		
 		logger().logDebug(message);
 	}
-	
-	public void logDebug(String message, Exception ex) {
-		
-		logger().logDebug(message, ex);
-	}
-	
+
 	public void logError(String message) {
 		
 		logger().logError(message);

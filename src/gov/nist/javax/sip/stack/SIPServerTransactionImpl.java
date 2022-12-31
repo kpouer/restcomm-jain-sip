@@ -1237,7 +1237,7 @@ public class SIPServerTransactionImpl extends SIPTransactionImpl implements SIPS
                         getMessageChannel().logMessage(lastReparsedResponse, this.getPeerInetAddress(), this.getPeerPort(), System.currentTimeMillis());
                     } catch (ParseException e) {
                         if (logger.isLoggingEnabled(LogWriter.TRACE_DEBUG)) {
-                            logger.logDebug("couldn't reparse last response " + new String(lastResponseAsBytes), e);
+                            logger.logDebug("couldn't reparse last response " + new String(lastResponseAsBytes));
                         }
                     }
                 }
@@ -1263,7 +1263,7 @@ public class SIPServerTransactionImpl extends SIPTransactionImpl implements SIPS
                             messageChannel.logMessage(lastReparsedResponse, messageChannel.getPeerInetAddress(), messageChannel.getPeerPort(), System.currentTimeMillis());
                         } catch (ParseException e) {
                             if (logger.isLoggingEnabled(LogWriter.TRACE_DEBUG)) {
-                                logger.logDebug("couldn't reparse last response " + new String(lastResponseAsBytes), e);
+                                logger.logDebug("couldn't reparse last response " + new String(lastResponseAsBytes));
                             }
                         }
                     }
@@ -2013,9 +2013,7 @@ public class SIPServerTransactionImpl extends SIPTransactionImpl implements SIPS
                     originalRequest = (SIPRequest) sipStack.getMessageParserFactory().createMessageParser(sipStack).parseSIPMessage(originalRequestBytes, true, false, null);
 //                    originalRequestBytes = null;
                 } catch (ParseException e) {
-                	if (logger.isLoggingEnabled(LogWriter.TRACE_DEBUG)) {
-                		logger.logDebug("message " + originalRequestBytes + "could not be reparsed !", e);
-                	}
+                    logger.logError("message " + originalRequestBytes + "could not be reparsed !");
                 }
             } else if (originalRequest != null && originalRequestBytes == null && getReleaseReferencesStrategy() == ReleaseReferencesStrategy.Normal) {
                 originalRequestBytes = originalRequest.encodeAsBytes(this.getTransport());

@@ -60,7 +60,7 @@ public class NioTcpMessageProcessor extends ConnectionOrientedMessageProcessor {
 
     // Data send over a socket is cached here before hand, the selector thread will take it later for physical send
     private final Map<SocketChannel, Queue<PendingData>> pendingData = Collections.synchronizedMap(new WeakHashMap<SocketChannel, Queue<PendingData>>());
-    
+
     
     public static class PendingData {
     	final String txId;
@@ -315,9 +315,7 @@ public class NioTcpMessageProcessor extends ConnectionOrientedMessageProcessor {
                     selectionKey.interestOps(SelectionKey.OP_WRITE);
                 }        		
         	} catch (Exception e) {
-                if(logger.isLoggingEnabled(LogWriter.TRACE_DEBUG)) {
-                        logger.logDebug("Cant connect ", e);        
-                }
+                logger.logError("Cant connect", e);
                 selectionKey.cancel();
     			if(sipStack.getSelfRoutingThreadpoolExecutor() != null) {
     				sipStack.getSelfRoutingThreadpoolExecutor().execute(new Runnable() {

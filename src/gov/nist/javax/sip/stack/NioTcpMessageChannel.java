@@ -65,7 +65,7 @@ public class NioTcpMessageChannel extends ConnectionOrientedMessageChannel {
 
         private static final int BUF_SIZE = 4096;        
         private final ByteBuffer byteBuffer  = ByteBuffer.allocateDirect(BUF_SIZE);
-                
+
 	public void readChannel() {
 		logger.logDebug("NioTcpMessageChannel::readChannel");
 		this.isRunning = true;
@@ -73,7 +73,7 @@ public class NioTcpMessageChannel extends ConnectionOrientedMessageChannel {
 			int nbytes = this.socketChannel.read(byteBuffer);
 			if (logger.isLoggingEnabled(LogWriter.TRACE_DEBUG)) {
 				logger.logDebug("Read " + nbytes + " from socketChannel");
-			}                        
+			}
 			boolean streamError = nbytes == -1;                        
 			if(streamError) 
 				throw new IOException("End-of-stream read (-1). " +
@@ -374,8 +374,8 @@ public class NioTcpMessageChannel extends ConnectionOrientedMessageChannel {
 	public void handleException(ParseException ex, SIPMessage sipMessage,
 			Class hdrClass, String header, String message)
 			throws ParseException {
-		if (logger.isLoggingEnabled(LogWriter.TRACE_DEBUG))
-            logger.logDebug("Parsing Exception: " , ex);
+		if (logger.isLoggingEnabled())
+			logger.logException(ex);
 		// Log the bad message for later reference.
 		if ((hdrClass != null)
 				&& (hdrClass.equals(From.class) || hdrClass.equals(To.class)
@@ -475,9 +475,7 @@ public class NioTcpMessageChannel extends ConnectionOrientedMessageChannel {
                         try {
                                 this.processMessage(unavRes);
                         } catch (Exception e) {
-                            if (logger.isLoggingEnabled(LogWriter.TRACE_DEBUG)) {
-                                logger.logDebug("failed to report transport error", e);
-                            }
+                            logger.logError("failed to report transport error");
                         }
                     }
                 } else {

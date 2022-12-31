@@ -236,8 +236,9 @@ final class SCTPMessageChannel extends MessageChannel
             this.processMessage( m, rxTime );
             rxTime = 0;    // reset for next message
         } catch (ParseException e) {
+            logger.logException( e );
             if ( logger.isLoggingEnabled( LogWriter.TRACE_DEBUG ) ) {
-                logger.logDebug( "Invalid message bytes=" + msg.length + ":" + new String(msg), e);
+                logger.logDebug( "Invalid message bytes=" + msg.length + ":" + new String(msg) );
             }
             this.close();
             throw new IOException( "Error parsing incoming SCTP message", e );
@@ -358,8 +359,8 @@ final class SCTPMessageChannel extends MessageChannel
     public void handleException(ParseException ex, SIPMessage sipMessage,
             Class hdrClass, String header, String message)
             throws ParseException {
-    	if (logger.isLoggingEnabled(LogWriter.TRACE_DEBUG))
-            logger.logDebug("Parsing Exception: " , ex);
+        if (getSIPStack().isLoggingEnabled())
+            this.logger.logException(ex);
         // Log the bad message for later reference.
         if ((hdrClass != null)
                 && (hdrClass.equals(From.class) || hdrClass.equals(To.class)
@@ -368,8 +369,8 @@ final class SCTPMessageChannel extends MessageChannel
                         || hdrClass.equals(CallID.class)
                         || hdrClass.equals(RequestLine.class) || hdrClass
                         .equals(StatusLine.class))) {
-        	if (logger.isLoggingEnabled(LogWriter.TRACE_DEBUG))
-        		logger.logError("BAD MESSAGE!" + message);
+            logger.logError("BAD MESSAGE!");
+            logger.logError(message);
         	
         	// JvB: send a 400 response for requests (except ACK)
 			// Currently only UDP, @todo also other transports
