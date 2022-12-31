@@ -171,7 +171,7 @@ public class EventScanner implements Runnable {
                     if (sipRequest.getMethod().equals(Request.ACK)
                             && tx.isInviteTransaction() &&
                             ( tx.getLastResponseStatusCode() / 100 == 2 ||
-                                    sipStack.isNon2XXAckPassedToListener())) {
+                                sipStack.isNon2XXAckPassedToListener())) {
 
                         if(!sipStack.isNon2XXAckPassedToListener()) {
                             if (logger.isLoggingEnabled(LogLevels.TRACE_DEBUG))

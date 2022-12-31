@@ -8,9 +8,8 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author yanick.belanger
  */
-public abstract class SIPHeaderNamesCache
-{
-    private static final Map lowercaseMap = new ConcurrentHashMap();
+public abstract class SIPHeaderNamesCache {
+    private static final Map<String, String> lowercaseMap = new ConcurrentHashMap<>();
 
     static {
         Field[] fields = SIPHeaderNames.class.getFields();
@@ -29,15 +28,12 @@ public abstract class SIPHeaderNamesCache
     }
 
     public static String toLowerCase(String headerName) {
-        String lowerCase = (String) lowercaseMap.get(headerName);
+        String lowerCase = lowercaseMap.get(headerName);
         if (lowerCase == null) {
             lowerCase = headerName.toLowerCase().intern();
             lowercaseMap.put(headerName, lowerCase);
             lowercaseMap.put(lowerCase, lowerCase);
-            return lowerCase;
         }
-        else {
-            return lowerCase;
-        }
+        return lowerCase;
     }
 }
