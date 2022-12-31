@@ -88,7 +88,6 @@ public class MinExpires extends SIPHeader implements MinExpiresHeader {
      * @throws InvalidArgumentException if supplied value is less than zero.
      *
      *
-     *
      */
     public void setExpires(int expires) throws InvalidArgumentException {
         if (expires < 0)

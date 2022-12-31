@@ -237,22 +237,23 @@ public class NIOHandler {
         messageProcessor.send(channel, bytes);
     }
 
+
     /**
-     * 
+     *
      * @param senderAddress
      * @param receiverAddress
      * @param contactPort
      * @param retry
      * @param key
      * @return
-     * @throws IOException 
+     * @throws IOException
      */
     private SocketChannel openOutgoingConnection(InetAddress senderAddress,
             InetAddress receiverAddress, int contactPort, boolean retry, String key) throws IOException {
         int retry_count = 0;
-        int max_retry = retry ? 2 : 1;        
+        int max_retry = retry ? 2 : 1;
         SocketChannel clientSock = null;
-        
+
         boolean entered = false;
         boolean connected = false;
         boolean attempted = false;
@@ -263,11 +264,11 @@ public class NIOHandler {
                 clientSock = getSocket(key);
                 //For nonBlocking connect, consider the socket as usable if
                 //connection is pending.
-                if(clientSock != null && (!clientSock.isConnected() || !clientSock.isOpen()) 
+                if(clientSock != null && (!clientSock.isConnected() || !clientSock.isOpen())
                 		&& !clientSock.isConnectionPending()) {
                 	removeSocket(key, false);
                     clientSock = null;
-                }                
+                }
                 if(clientSock == null) {
                 	attempted = true;
                     //ok, this thread won, let's try to recover conn
@@ -287,7 +288,7 @@ public class NIOHandler {
                                     // address (i.e. that of the stack). In version 1.2
                                     // the IP address is on a per listening point basis.
                                     try {
-                                            clientSock = messageProcessor.connect(new InetSocketAddress(receiverAddress, contactPort), 
+                                            clientSock = messageProcessor.connect(new InetSocketAddress(receiverAddress, contactPort),
                                                     senderAddress, this.messageProcessor.sipStack.connTimeout);
                                             //sipStack.getNetworkLayer().createSocket(
                                             //		receiverAddress, contactPort, senderAddress); TODO: sender address needed
@@ -351,10 +352,10 @@ public class NIOHandler {
                                                     "inaddr = " + receiverAddress +
                                                     " port = " + contactPort);
                             }
-                            clientSock = messageProcessor.connect(new InetSocketAddress(receiverAddress, contactPort), 
+                            clientSock = messageProcessor.connect(new InetSocketAddress(receiverAddress, contactPort),
                                     senderAddress, this.messageProcessor.sipStack.connTimeout);
                             putSocket(key, clientSock);
-                    } 
+                    }
 
                     if (logger.isLoggingEnabled(LogWriter.TRACE_DEBUG)) {
                             logger.logDebug(
@@ -368,17 +369,17 @@ public class NIOHandler {
             }
         } finally {
             if (entered) {
-                if (attempted && !connected) 
+                if (attempted && !connected)
                 {
                     // new connection is bad.
                     // remove from our table the socket and its semaphore
-                    //remove before leaving IO critical section, so sem is 
+                    //remove before leaving IO critical section, so sem is
                     //actually released!!!
-                    removeSocket(key,true);                    
-                }                
+                    removeSocket(key,true);
+                }
                 keyedSemaphore.leaveIOCriticalSection(key);
             }
-        }        
+        }
         return clientSock;
     }
 
@@ -401,10 +402,10 @@ public class NIOHandler {
             InetAddress receiverAddress, int contactPort, String transport,
             byte[] bytes, boolean retry, NioTcpMessageChannel messageChannel)
             throws IOException {
-    	
+
     	if(stopped.get())
     		return null;
-    	
+
         // Server uses TCP transport. TCP client sockets are cached
         int length = bytes.length;
         if (logger.isLoggingEnabled(LogWriter.TRACE_DEBUG)) {
@@ -418,32 +419,32 @@ public class NIOHandler {
         		&& sipStack.isLogStackTraceOnMessageSend()) {
         	logger.logStackTrace(StackLogger.TRACE_INFO);
         }
-        
+
         String key = makeKey(receiverAddress, contactPort);
-  
+
         boolean newSocket = false;
         SocketChannel clientSock = getSocket(key);
-        if(clientSock != null && (!clientSock.isConnected() || !clientSock.isOpen()) && 
+        if(clientSock != null && (!clientSock.isConnected() || !clientSock.isOpen()) &&
             (!clientSock.isConnectionPending())) {
                 clientSock = null;
-        }        
+        }
         if(clientSock == null) {
                 newSocket = true;
                 clientSock = openOutgoingConnection(senderAddress, receiverAddress, contactPort, retry, key);
                 messageChannel.peerPort = contactPort;
         }
-        
-        if(clientSock != null) {     
+
+        if(clientSock != null) {
                 if(newSocket && messageChannel instanceof NioTlsMessageChannel) {
                         //We dont write data when using TLS, the new socket needs to handshake first
-                        //Added for https://java.net/jira/browse/JSIP-483 
+                        //Added for https://java.net/jira/browse/JSIP-483
                         HandshakeCompletedListenerImpl listner = new HandshakeCompletedListenerImpl((NioTlsMessageChannel)messageChannel, clientSock);
                             ((NioTlsMessageChannel) messageChannel)
-                                    .setHandshakeCompletedListener(listner);                        
+                                    .setHandshakeCompletedListener(listner);
                 } else {
                         writeChunks(clientSock, bytes, length);
                 }
-        }        
+        }
 
         if (clientSock == null) {
 
@@ -517,8 +518,7 @@ public class NIOHandler {
     	String key = NIOHandler.makeKey(inetAddress, port);
     	SocketChannel channel = null;
         channel = getSocket(key);
-        if(channel != null && (!channel.isConnected() || !channel.isOpen())
-                && !channel.isConnectionPending()) {
+        if(channel != null && (!channel.isConnected() || !channel.isOpen()) && !channel.isConnectionPending()) {
                 if(logger.isLoggingEnabled(LogWriter.TRACE_DEBUG))
                         logger.logDebug("Channel disconnected " + channel);
                 channel = null;

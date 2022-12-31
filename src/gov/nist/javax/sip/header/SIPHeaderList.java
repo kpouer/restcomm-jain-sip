@@ -498,9 +498,11 @@ public abstract class SIPHeaderList<HDR extends SIPHeader> extends SIPHeader imp
 
     protected StringBuilder encodeBody(StringBuilder buffer) {
         ListIterator<HDR> iterator = this.listIterator();
+
         while (true) {
             SIPHeader sipHeader = (SIPHeader) iterator.next();
             if ( sipHeader == this ) throw new RuntimeException ("Unexpected circularity in SipHeaderList");
+
             sipHeader.encodeBody(buffer);
             // if (body.equals("")) System.out.println("BODY == ");
             if (iterator.hasNext()) {

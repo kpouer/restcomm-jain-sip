@@ -283,9 +283,7 @@ public class SIPRequest extends SIPMessage implements javax.sip.message.Request,
             //Event header mandatory just for in-dialog NOTIFY
             if (getFromHeader().getTag()!=null &&
                     getToHeader().getTag() != null && getHeader(EventHeader.NAME) == null)
-            {
                 throw new ParseException(prefix + EventHeader.NAME, 0);
-            }
 
         } else if (getMethod().equals(Request.PUBLISH)) {
             /*

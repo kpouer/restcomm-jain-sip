@@ -278,7 +278,7 @@ public class TLSMessageChannel extends ConnectionOrientedMessageChannel {
           		 close(false, false);
           	}    
           	if(problem == null) {
-          		if(mySock != null) {
+          		if (mySock != null) {
    	        		if(logger.isLoggingEnabled(LogWriter.TRACE_WARN)) {
    	        			logger.logWarning(
    	                		 "There was no exception for the retry mechanism so creating a new thread based on the new socket for incoming " + key);

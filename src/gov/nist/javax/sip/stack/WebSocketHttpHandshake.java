@@ -157,9 +157,8 @@ public class WebSocketHttpHandshake {
 		}
 		byte[] digest = md.digest(key.getBytes());
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                String encodeBase64String = Base64.encodeBytes(digest);
-		return encodeBase64String;
-		
+        return Base64.encodeBytes(digest);
+
 	}
 
 

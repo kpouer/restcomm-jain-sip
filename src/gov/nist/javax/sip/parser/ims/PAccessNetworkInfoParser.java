@@ -162,12 +162,9 @@ public class PAccessNetworkInfoParser
     }
 
 
-    public SIPHeader parse() throws ParseException
-    {
-
+    public SIPHeader parse() throws ParseException {
         if (debug)
             dbg_enter("AccessNetworkInfoParser.parse");
-
         PAccessNetworkInfoList accessNetworkInfoList = new PAccessNetworkInfoList();
 
         try {
@@ -180,11 +177,11 @@ public class PAccessNetworkInfoParser
                 lexer.match(TokenTypes.ID);
                 Token token = lexer.getNextToken();
                 accessNetworkInfo.setAccessType(token.getTokenValue());
+
                 this.lexer.SPorHT();
                 while (lexer.lookAhead(0) == ';') {
                     this.lexer.match(';');
                     this.lexer.SPorHT();
-
                     try {
                         NameValue nv = super.nameValue('=');
                         accessNetworkInfo.setParameter(nv);
@@ -213,15 +210,12 @@ public class PAccessNetworkInfoParser
                 else
                     throw createParseException("unexpected char");
             }
+
             return accessNetworkInfoList;
         } finally {
             if (debug)
                 dbg_leave("AccessNetworkInfoParser.parse");
         }
-
     }
-
-
-
 
 }

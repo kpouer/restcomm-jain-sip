@@ -74,7 +74,7 @@ public class NioPipelineParserTest extends ScenarioHarness {
         }
 
         @Override
-        public void sendSingleCLRF() throws Exception {
+        public void sendSingleCRLF() throws Exception {
         }
 
         @Override

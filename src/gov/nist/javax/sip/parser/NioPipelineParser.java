@@ -70,7 +70,6 @@ public class NioPipelineParser {
     private int sizeCounter;
     private SIPTransactionStack sipStack;
     private MessageParser smp = null;
-
     boolean isRunning = false;
 	boolean currentStreamEnded = false;
 	boolean readingMessageBodyContents = false;
@@ -173,7 +172,7 @@ public class NioPipelineParser {
 	 *  For TCP the key things to identify are message lines for the headers, parse the Content-Length header
 	 *  and then read the message body (aka message content). For TCP the Content-Length must be 100% accurate.
 	 */
-	public void readStream(InputStream inputStream) throws IOException {
+	private void readStream(InputStream inputStream) throws IOException {
 		boolean isPreviousLineCRLF = false;
 		while(true) { // We read continiously from the bytes we receive and only break where there are no more bytes in the inputStream passed to us
 			if(currentStreamEnded) break; // The stream ends when we have read all bytes in the chunk NIO passed to us
@@ -219,9 +218,9 @@ public class NioPipelineParser {
                 	crlfReceived = false;
 
                 	try {
-						sipMessageListener.sendSingleCLRF();
+						sipMessageListener.sendSingleCRLF();
 					} catch (Exception e) {						
-						logger.logError("A problem occured while trying to send a single CLRF in response to a double CLRF", e);
+						logger.logError("A problem occured while trying to send a single CRLF in response to a double CRLF", e);
 					}                	                	
             	} else {
             		crlfReceived = true;

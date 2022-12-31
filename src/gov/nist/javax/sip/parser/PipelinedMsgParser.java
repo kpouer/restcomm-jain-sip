@@ -43,7 +43,6 @@ import gov.nist.core.LogWriter;
 import gov.nist.core.StackLogger;
 import gov.nist.javax.sip.header.ContentLength;
 import gov.nist.javax.sip.message.SIPMessage;
-import gov.nist.javax.sip.stack.BlockingQueueDispatchAuditor;
 import gov.nist.javax.sip.stack.ConnectionOrientedMessageChannel;
 import gov.nist.javax.sip.stack.QueuedMessageDispatchBase;
 import gov.nist.javax.sip.stack.SIPTransactionStack;
@@ -53,15 +52,9 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.Queue;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 /**
  * This implements a pipelined message parser suitable for use with a stream -
@@ -366,9 +359,9 @@ public final class PipelinedMsgParser implements Runnable {
                                 isPreviousLineCRLF = false;
 
                             	try {
-            						sipMessageListener.sendSingleCLRF();
+            						sipMessageListener.sendSingleCRLF();
             					} catch (Exception e) {						
-            						logger.logError("A problem occured while trying to send a single CLRF in response to a double CLRF", e);
+            						logger.logError("A problem occured while trying to send a single CRLF in response to a double CRLF", e);
             					}                	
                             	continue;
                         	} else {
@@ -460,7 +453,7 @@ public final class PipelinedMsgParser implements Runnable {
                     if (stackLogger.isLoggingEnabled(StackLogger.TRACE_DEBUG)) {
                         stackLogger.logDebug("About to parse : " + inputBuffer.toString());
                     }
-                    byte[] inputBufferBytes;
+                    byte[] inputBufferBytes = null;
                     try {
                         inputBufferBytes = inputBuffer.toString().getBytes("UTF-8");
                     } catch (UnsupportedEncodingException e) {

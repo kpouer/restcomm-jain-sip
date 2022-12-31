@@ -35,7 +35,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public final class KeyedSemaphore {
-
     private final ConcurrentHashMap<String, ReentrantLock> map = new ConcurrentHashMap<String, ReentrantLock>();
     private static final StackLogger logger = CommonLogger.getLogger(KeyedSemaphore.class);
 
@@ -79,13 +78,13 @@ public final class KeyedSemaphore {
     public void enterIOCriticalSection(String key) throws IOException {
         // http://dmy999.com/article/34/correct-use-of-concurrenthashmap
         Lock creationLock = map.get(key);
-        if (creationLock == null) {
+        if(creationLock == null) {
             ReentrantLock newCreationLock = new ReentrantLock(true);
             creationLock = map.putIfAbsent(key, newCreationLock);
-            if (creationLock == null) {
+            if(creationLock == null) {
                 creationLock = newCreationLock;
                 if (logger.isLoggingEnabled(StackLogger.TRACE_DEBUG)) {
-                    logger.logDebug("new Semaphore added for key: " + key);
+                    logger.logDebug("new Semaphore added for key " + key);
                 }
             }
         }

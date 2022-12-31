@@ -99,7 +99,7 @@ import javax.sip.message.Response;
  */
 public class UDPMessageChannel extends MessageChannel implements
         ParseExceptionListener, Runnable, RawMessageChannel {
-    private static final StackLogger logger = CommonLogger.getLogger(UDPMessageChannel.class);
+    private static StackLogger logger = CommonLogger.getLogger(UDPMessageChannel.class);
     /**
      * SIP Stack structure for this channel.
      */
@@ -689,7 +689,6 @@ public class UDPMessageChannel extends MessageChannel implements
             if (logger.isLoggingEnabled(LogWriter.TRACE_DEBUG)) {
                 logger.logDebug("BAD MESSAGE! " + message);
             }
-            
             throw ex;
         } else {
             sipMessage.addUnparsed(header);

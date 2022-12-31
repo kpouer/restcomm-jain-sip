@@ -185,7 +185,6 @@ public class NioTlsWebSocketMessageChannel extends NioWebSocketMessageChannel im
 		if(this.socketChannel != null && this.socketChannel.isConnected() && this.socketChannel.isOpen()) {
 			nioHandler.putSocket(NIOHandler.makeKey(this.peerAddress, this.peerPort), this.socketChannel);
 		}
-
 		super.sendNonWebSocketMessage(msg, false);
 		//super.sendMessage(msg, this.peerAddress, this.peerPort, true);
 	}
@@ -232,6 +231,8 @@ public class NioTlsWebSocketMessageChannel extends NioWebSocketMessageChannel im
 			} catch (IOException e) {
 				throw e;
 			}
+
+
 		} else {
 			ByteBuffer b = ByteBuffer.wrap(NioWebSocketMessageChannel.wrapBufferIntoWebSocketFrame(message, client));
 			try {

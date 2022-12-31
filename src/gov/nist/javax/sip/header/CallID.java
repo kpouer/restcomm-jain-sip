@@ -28,7 +28,6 @@
 *******************************************************************************/
 package gov.nist.javax.sip.header;
 import javax.sip.header.CallIdHeader;
-
 import java.text.ParseException;
 
 /**

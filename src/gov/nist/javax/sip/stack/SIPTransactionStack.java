@@ -102,10 +102,10 @@ public abstract class SIPTransactionStack implements
     protected ConcurrentHashMap<String, SIPServerTransaction> retransmissionAlertTransactions;
 
     // Table of early dialogs ( to keep identity mapping )
-    protected ConcurrentHashMap<String, SIPDialog> earlyDialogTable;
+    protected Map<String, SIPDialog> earlyDialogTable;
 
     // Table of dialogs.
-    protected ConcurrentHashMap<String, SIPDialog> dialogTable;
+    protected Map<String, SIPDialog> dialogTable;
 
     // Table of server dialogs ( for loop detection)
     protected ConcurrentHashMap<String, SIPDialog> serverDialogMergeTestTable;
@@ -1075,11 +1075,9 @@ public abstract class SIPTransactionStack implements
             //take into account dialogId, so we can try and match the proper TX
             String dialogId = notifyMessage.getDialogId(true);
             Iterator it = clientTransactionTable.values().iterator();
-            if (logger.isLoggingEnabled(LogWriter.TRACE_DEBUG)) {
+            if (logger.isLoggingEnabled(LogWriter.TRACE_DEBUG))
                 logger.logDebug("ct table size = "
                         + clientTransactionTable.size());
-            }
-
             String thisToTag = notifyMessage.getTo().getTag();
             if (thisToTag == null) {
                 return retval;

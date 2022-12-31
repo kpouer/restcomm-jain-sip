@@ -853,6 +853,7 @@ public class SipStackImpl extends SIPTransactionStack implements
 		// http://java.net/jira/browse/JSIP-415 Prevent Bad Client or Attacker (DoS) to block the TLSMessageProcessor or TLSMessageChannel
 		super.setSslHandshakeTimeout(Long.parseLong(
 		        configurationProperties.getProperty("gov.nist.javax.sip.SSL_HANDSHAKE_TIMEOUT", "-1")));
+
 		super.setThreadPriority(Integer.parseInt(
 			        configurationProperties.getProperty("gov.nist.javax.sip.THREAD_PRIORITY","" + Thread.MAX_PRIORITY)));
 

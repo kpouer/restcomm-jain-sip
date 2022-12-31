@@ -47,11 +47,7 @@ public class DefaultSipTimer extends Timer implements SipTimer {
 
 	protected AtomicBoolean started = new AtomicBoolean(false);
 	protected SipStackImpl sipStackImpl;
-	
-        public DefaultSipTimer() {
-            super("DefaultSipTimerThread");
-        }
-        
+
 	private class DefaultTimerTask extends TimerTask {
 		private SIPStackTimerTask task;
 

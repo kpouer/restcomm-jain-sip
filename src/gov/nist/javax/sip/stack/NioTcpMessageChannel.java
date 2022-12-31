@@ -51,10 +51,8 @@ import java.nio.channels.SocketChannel;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.net.ssl.SSLException;
-import javax.sip.TransactionState;
 
 public class NioTcpMessageChannel extends ConnectionOrientedMessageChannel {
 	private static StackLogger logger = CommonLogger
@@ -64,15 +62,12 @@ public class NioTcpMessageChannel extends ConnectionOrientedMessageChannel {
 	protected long lastActivityTimeStamp;
 	NioPipelineParser nioParser = null;
 
-        
+
         private static final int BUF_SIZE = 4096;        
         private final ByteBuffer byteBuffer  = ByteBuffer.allocateDirect(BUF_SIZE);
                 
 	public void readChannel() {
-                if (logger.isLoggingEnabled(LogWriter.TRACE_DEBUG)) {
-                    logger.logDebug("NioTcpMessageChannel::readChannel");
-                }
-                
+		logger.logDebug("NioTcpMessageChannel::readChannel");
 		this.isRunning = true;
 		try {
 			int nbytes = this.socketChannel.read(byteBuffer);
@@ -109,7 +104,7 @@ public class NioTcpMessageChannel extends ConnectionOrientedMessageChannel {
 
 			try {
 				if (logger.isLoggingEnabled(LogWriter.TRACE_DEBUG)) {
-					logger.logDebug("I/O Issue closing sock " + ex.getMessage() + "myAddress:myport " + myAddress + ":" + myPort + ", remoteAddress:remotePort " + peerAddress + ":" + peerPort);
+					logger.logDebug("IOException  closing sock " + ex + "myAddress:myport " + myAddress + ":" + myPort + ", remoteAddress:remotePort " + peerAddress + ":" + peerPort);
 					logger.logStackTrace();
 				}
 				
@@ -118,7 +113,7 @@ public class NioTcpMessageChannel extends ConnectionOrientedMessageChannel {
 				
 			} catch (Exception ex1) {
 				if (logger.isLoggingEnabled(LogWriter.TRACE_DEBUG))
-					logger.logDebug("Issue closing the socket " + ex1);
+					logger.logDebug("Exception closing the socket " + ex1);
 			}
 		} 
 //		catch (Exception ex) {

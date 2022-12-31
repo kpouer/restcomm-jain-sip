@@ -60,53 +60,55 @@ public abstract class ParserCore {
 
             char la = lexer.lookAhead(0);
 
-            if (la == separator ) {
+            if (la == separator) {
                 lexer.consume(1);
                 lexer.SPorHT();
                 String str = null;
                 boolean isFlag = false;
                 char c = lexer.lookAhead(0);
-                if (c == '\"')  {
+                if (c == '\"') {
                      str = lexer.quotedString();
                      quoted = true;
-                } else if (c == '['){
+                } else if (c == '[') {
                     lexer.match(LexerCore.IPV6);
                     Token value = lexer.getNextToken();
                     str = value.tokenValue;
 
                     // JvB: flag parameters must be empty string!
-                    if (str==null) {
+                    if (str == null) {
                         str = "";
                         isFlag = true;
                     }
-                }else {
+                } else {
                    lexer.match(LexerCore.ID);
                    Token value = lexer.getNextToken();
                    str = value.tokenValue;
 
                    // JvB: flag parameters must be empty string!
-                   if (str==null) {
+                   if (str == null) {
                        str = "";
                        isFlag = true;
                    }
                 }
-                NameValue nv = new NameValue(name.tokenValue,str,isFlag);
-                if (quoted) nv.setQuotedValue();
+                NameValue nv = new NameValue(name.tokenValue, str, isFlag);
+                if (quoted)
+                    nv.setQuotedValue();
                 return nv;
-            }  else {
+            } else {
                 // JvB: flag parameters must be empty string!
-                return new NameValue(name.tokenValue,"",true);
+                return new NameValue(name.tokenValue, "", true);
             }
         } catch (ParseException ex) {
-            return new NameValue(name.tokenValue,null,false);
+            return new NameValue(name.tokenValue, null, false);
         }
 
         } finally {
-            if (debug) dbg_leave("nameValue");
+            if (debug)
+                dbg_leave("nameValue");
         }
 
-
     }
+
 
     protected  void dbg_enter(String rule) {
         StringBuilder stringBuilder = new StringBuilder();

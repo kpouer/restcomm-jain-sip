@@ -414,7 +414,8 @@ public class SIPServerTransactionImpl extends SIPTransactionImpl implements SIPS
                 SIPStackTimerTask myTimer = new LingerTimer();
 
                 if(sipStack.getConnectionLingerTimer() != 0) {
-                	sipStack.getTimer().schedule(myTimer, sipStack.getConnectionLingerTimer() * 1000);
+                	sipStack.getTimer().schedule(myTimer,
+                            sipStack.getConnectionLingerTimer() * 1000);
                 } else {
                 	myTimer.runTask();
                 }
@@ -472,6 +473,8 @@ public class SIPServerTransactionImpl extends SIPTransactionImpl implements SIPS
             	//existing channel instead of we
             	//should open new channel based on via header
                 getMessageChannel().sendMessage(transactionResponse);
+
+
             } else {
                 Via via = transactionResponse.getTopmostVia();
                 String transport = via.getTransport();
