@@ -53,12 +53,12 @@ public class PAccessNetworkInfoList extends SIPHeaderList<PAccessNetworkInfo> {
 	/*
 	 * Default Construction
 	 */
-    public PAccessNetworkInfoList() {
-        super(PAccessNetworkInfo.class, PAccessNetworkInfoHeader.NAME);
-    }
+	public PAccessNetworkInfoList() {
+		super(PAccessNetworkInfo.class, PAccessNetworkInfoHeader.NAME);
+	}
 
-    public Object clone() {
-        PAccessNetworkInfoList retval = new PAccessNetworkInfoList();
+	public Object clone() {
+		PAccessNetworkInfoList retval = new PAccessNetworkInfoList();
         return retval.clonehlist(this.hlist);
     }
 
