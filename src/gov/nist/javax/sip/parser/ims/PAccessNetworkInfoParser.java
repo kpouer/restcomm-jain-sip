@@ -76,6 +76,9 @@ import gov.nist.javax.sip.parser.TokenTypes;
  *                                utran-sai-3gpp / extension-access-info
  *       np                     = "network-provided"
  *       extension-access-info  = generic-param
+ *  <p>As per RFC 3261 </p>
+ *      generic-param  =  token [ EQUAL gen-value ]
+ *      gen-value      =  token / host / quoted-string
  * </pre>
  *
  * <p>RFC 7315 - Private Header (P-Header) Extensions to the Session Initiation Protocol (SIP) for the 3GPP </p>
@@ -162,60 +165,60 @@ public class PAccessNetworkInfoParser
     }
 
 
-    public SIPHeader parse() throws ParseException {
-        if (debug)
-            dbg_enter("AccessNetworkInfoParser.parse");
-        PAccessNetworkInfoList accessNetworkInfoList = new PAccessNetworkInfoList();
+	public SIPHeader parse() throws ParseException {
+		if (debug)
+			dbg_enter("AccessNetworkInfoParser.parse");
+		PAccessNetworkInfoList accessNetworkInfoList = new PAccessNetworkInfoList();
 
-        try {
-            headerName(TokenTypes.P_ACCESS_NETWORK_INFO);
-            while (true) {
-                PAccessNetworkInfo accessNetworkInfo = new PAccessNetworkInfo();
-                accessNetworkInfo.setHeaderName(SIPHeaderNamesIms.P_ACCESS_NETWORK_INFO);
+		try {
+			headerName(TokenTypes.P_ACCESS_NETWORK_INFO);
+			while (true) {
+				PAccessNetworkInfo accessNetworkInfo = new PAccessNetworkInfo();
+				accessNetworkInfo.setHeaderName(SIPHeaderNamesIms.P_ACCESS_NETWORK_INFO);
 
-                this.lexer.SPorHT();
-                lexer.match(TokenTypes.ID);
-                Token token = lexer.getNextToken();
-                accessNetworkInfo.setAccessType(token.getTokenValue());
+				this.lexer.SPorHT();
+				lexer.match(TokenTypes.ID);
+				Token token = lexer.getNextToken();
+				accessNetworkInfo.setAccessType(token.getTokenValue());
 
-                this.lexer.SPorHT();
-                while (lexer.lookAhead(0) == ';') {
-                    this.lexer.match(';');
-                    this.lexer.SPorHT();
-                    try {
-                        NameValue nv = super.nameValue('=');
-                        accessNetworkInfo.setParameter(nv);
-                    } catch (ParseException e) {
-                        this.lexer.SPorHT();
-                        String ext = this.lexer.quotedString();
-                        if (ext == null) {
-                            ext = this.lexer.ttokenGenValue();
-                        } else {
-                            // avoids tokens such as "a=b" to be stripped of quotes and misinterpretend as
-                            // RFC 7913 generic-param when re-encoded
-                            ext = "\"" + ext + "\"";
-                        }
-                        accessNetworkInfo.setExtensionAccessInfo(ext);
-                    }
-                    this.lexer.SPorHT();
-                }
-                accessNetworkInfoList.add(accessNetworkInfo);
-                this.lexer.SPorHT();
-                char la = lexer.lookAhead(0);
-                if (la == ',') {
-                    this.lexer.match(',');
-                    this.lexer.SPorHT();
-                } else if (la == '\n')
-                    break;
-                else
-                    throw createParseException("unexpected char");
-            }
+				this.lexer.SPorHT();
+				while (lexer.lookAhead(0) == ';') {
+					this.lexer.match(';');
+					this.lexer.SPorHT();
+					try {
+						NameValue nv = super.nameValue('=');
+						accessNetworkInfo.setParameter(nv);
+					} catch (ParseException e) {
+						this.lexer.SPorHT();
+						String ext = this.lexer.quotedString();
+						if (ext == null) {
+							ext = this.lexer.ttokenGenValue();
+						} else {
+							// avoids tokens such as "a=b" to be stripped of quotes and misinterpretend as
+							// RFC 7913 generic-param when re-encoded
+							ext = "\"" + ext + "\"";
+						}
+						accessNetworkInfo.setExtensionAccessInfo(ext);
+					}
+					this.lexer.SPorHT();
+				}
+				accessNetworkInfoList.add(accessNetworkInfo);
+				this.lexer.SPorHT();
+				char la = lexer.lookAhead(0);
+				if (la == ',') {
+					this.lexer.match(',');
+					this.lexer.SPorHT();
+				} else if (la == '\n')
+					break;
+				else
+					throw createParseException("unexpected char");
+			}
 
-            return accessNetworkInfoList;
-        } finally {
-            if (debug)
-                dbg_leave("AccessNetworkInfoParser.parse");
-        }
-    }
+			return accessNetworkInfoList;
+		} finally {
+			if (debug)
+				dbg_leave("AccessNetworkInfoParser.parse");
+		}
+	}
 
 }
