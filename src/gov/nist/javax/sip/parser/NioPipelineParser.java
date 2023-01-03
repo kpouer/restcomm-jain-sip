@@ -201,10 +201,10 @@ public class NioPipelineParser {
                 // contribution from Alexander Saveliev compare to lower case as RFC 3261 states (7.3.1 Header Field Format) states that header fields are case-insensitive
 				if(lineIgnoreCase.startsWith(ContentLength.NAME_LOWER)) { // naive Content-Length header parsing to figure out how much bytes of message body must be read after the SIP headers
 					contentLength = Integer.parseInt(line.substring(
-							ContentLength.NAME_LOWER.length()+1).trim());
+							ContentLengthHeader.NAME.length()+1).trim());
 				} else if(lineIgnoreCase.startsWith(CallID.NAME_LOWER)) { // naive Content-Length header parsing to figure out how much bytes of message body must be read after the SIP headers
 					callId = line.substring(
-							CallID.NAME_LOWER.length()+1).trim();
+							CallIdHeader.NAME.length()+1).trim();
 				}
 			} else {				
 				if(isPreviousLineCRLF) {
